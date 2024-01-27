@@ -2,3 +2,4 @@ Flask
 langchain
 pandas
 Werkzeug
+langchain_community
