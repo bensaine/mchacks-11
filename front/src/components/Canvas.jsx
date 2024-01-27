@@ -2,6 +2,15 @@ import { ReactP5Wrapper } from "@p5-wrapper/react"
 import { socket } from "../socket"
 import { nanoid } from "nanoid"
 
+const boothsData = [
+	{ name: "SSMU", image: "/ssmu.svg", x:100,  y:100 },
+	{ name: "SSMU", image: "/ssmu.svg", x:-100,  y:100 },
+	{ name: "SSMU", image: "/ssmu.svg", x:100,  y:-100 },
+	{ name: "SSMU", image: "/ssmu.svg", x:-100,  y:-100 }
+]
+
+const boothSize = 90
+
 function sketch(p5) {
 	let boothObjs
 	let font
@@ -65,12 +74,18 @@ function sketch(p5) {
 		world.updateState(state)
 	})
 
-	function loadBooths(boothData) {
+	function loadBooths() {
 		let booths = []
-		for (let booth of boothData) {
-			booths.push({ imgObj: p5.loadImage(booth.image), name: booth.name })
+		for (let booth of boothsData) {
+			booths.push({ imgObj: p5.loadImage(booth.image), name: booth.name, x:booth.x, y:booth.y })
 		}
 		return booths
+	}
+
+	function drawBooths(){
+		for (let booth of boothObjs){
+			drawBooth(booth.imgObj, booth.name, booth.x, booth.y, boothSize)
+		}
 	}
 
 	function drawBooth(imageObj, name, x, y, size) {
@@ -103,7 +118,7 @@ function sketch(p5) {
 	}
 
 	p5.preload = () => {
-		boothObjs = loadBooths([{ name: "SSMU", image: "/ssmu.svg" }])
+		boothObjs = loadBooths()
 		font = p5.loadFont("/fonts/NotoSans-Regular.ttf")
 	}
 
@@ -115,7 +130,7 @@ function sketch(p5) {
 	p5.draw = () => {
 		p5.background(0, 0, 0)
 		world.display()
-		drawBooth(boothObjs[0].imgObj, boothObjs[0].name, 100, 100, 50)
+		drawBooths()
 	}
 }
 
