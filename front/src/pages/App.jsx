@@ -9,7 +9,7 @@ function App() {
 		<div css={wrapperStyle}>
 			<h1>Welcome to CareerFairy! 🧚</h1>
 			<IntervieweeOnboardForm />
-			<p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+			<p className="read-the-docs">Get that game face ready! Time to shine.</p>
 		</div>
 	)
 }
