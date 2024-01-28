@@ -53,7 +53,7 @@ export const IntervieweeOnboardForm = () => {
 	return (
 		<div style={{ display: "flex", position: "relative", flexDirection: "column", gap: "1rem" }}>
 			<h2>Onboarding Form</h2>
-			{(true || player === undefined || loading) && (
+			{(player === undefined || loading) && (
 				<div
 					style={{
 						display: "flex",
