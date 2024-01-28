@@ -7,12 +7,7 @@ import AvatarPicker from "./AvatarPicker"
 import p5 from "p5"
 import { MyStream } from "./MyStream"
 import { usePlayerStore } from "../hooks/usePlayerStore"
-import { css } from "@emotion/react"
 import { Insights } from "./Insights"
-
-const selfWebcamStyle = css`
-	position: fixed;
-`
 
 const VELOCITY_MULTIPLIER = 5
 const UP = new p5.Vector(0, -1)
@@ -112,9 +107,11 @@ class Player {
 	}
 	display(sketch) {
 		sketch.fill(255, 255, 255)
-		sketch.ellipse(this.position.x, this.position.y, 30, 30)
+		const ELLIPSE_SIZE = 50
+		sketch.ellipse(this.position.x, this.position.y, ELLIPSE_SIZE, ELLIPSE_SIZE)
+		const IMAGE_SIZE = 40
 		if (this.currentPlayer) {
-			sketch.image(emojis[avatar], this.position.x - 7.5, this.position.y - 7.5, 15, 15)
+			sketch.image(emojis[avatar], this.position.x - IMAGE_SIZE / 2, this.position.y - IMAGE_SIZE / 2, IMAGE_SIZE, IMAGE_SIZE)
 		}
 	}
 

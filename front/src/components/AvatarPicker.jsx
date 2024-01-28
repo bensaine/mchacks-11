@@ -6,7 +6,7 @@ const style = css`
 	display:flex;
 	flex-direction:column;
 	align-items:start;
-	top:0.5rem;
+	bottom:0.5rem;
 	left:0.5rem;
 	z-index = 2;
 	padding:1rem;
@@ -19,7 +19,7 @@ const styleTransparent = css`
 	display:flex;
 	flex-direction:column;
 	align-items:start;
-	top:0rem;
+	bottom:0rem;
 	left:0rem;
 	z-index = 2;
 	padding:1rem;
