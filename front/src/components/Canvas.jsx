@@ -8,6 +8,7 @@ import p5 from "p5"
 import { MyStream } from "./MyStream"
 import { usePlayerStore } from "../hooks/usePlayerStore"
 import { css } from "@emotion/react"
+import { Insights } from "./Insights"
 
 const selfWebcamStyle = css`
 	position: fixed;
@@ -291,11 +292,12 @@ const Canvas = () => {
 	return loading ? (
 		"loading"
 	) : (
-		<div>
+		<div style={{ postion: "relative" }}>
 			<AvatarPicker onChosen={avatarChangeHandler}></AvatarPicker>
 			<ReactP5Wrapper sketch={sketchRef.current} avatar={avatarState} />
 			<VideoStreams streams={streams} />
 			{loadedWebcam && <MyStream stream={helper.selfStream} muted />}
+			<Insights player={player} />
 		</div>
 	)
 }
