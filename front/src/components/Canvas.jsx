@@ -38,12 +38,13 @@ const boothsData = [
 	{ name: "SpiceBros", image: "/SpiceBros.png" },
 	{ name: "Incogni", image: "/incogni.png" },
 ]
-const boothSize = 90
+const boothSize = 64
 const boothPadding = 50
 const textSize = 12
 
 let emojis = []
 let avatar = "smile"
+let font
 
 class World {
 	constructor(createPeerHelper, playerInfo) {
@@ -106,12 +107,17 @@ class Player {
 		this.info = info
 	}
 	display(sketch) {
+    const IMAGE_SIZE = 40
+    const ELLIPSE_SIZE = 50
+    sketch.textFont(font)
+    sketch.textSize(textSize)
+    sketch.textAlign(sketch.CENTER)
+    sketch.fill(36, 36, 36)
+    sketch.text(`${this.info.firstName} ${this.info.lastName}`, this.position.x, this.position.y - ELLIPSE_SIZE/2)
 		sketch.fill(255, 255, 255)
-		const ELLIPSE_SIZE = 50
-		sketch.ellipse(this.position.x, this.position.y, ELLIPSE_SIZE, ELLIPSE_SIZE)
-		const IMAGE_SIZE = 40
+		sketch.ellipse(this.position.x, this.position.y + textSize, ELLIPSE_SIZE, ELLIPSE_SIZE)
 		if (this.currentPlayer) {
-			sketch.image(emojis[avatar], this.position.x - IMAGE_SIZE / 2, this.position.y - IMAGE_SIZE / 2, IMAGE_SIZE, IMAGE_SIZE)
+			sketch.image(emojis[avatar], this.position.x - IMAGE_SIZE / 2 , this.position.y - IMAGE_SIZE / 2 + textSize, IMAGE_SIZE, IMAGE_SIZE)
 		}
 	}
 
@@ -163,7 +169,6 @@ const Canvas = () => {
 		const sketch = (p5) => {
 			let boothObjs
 			let boothLocations
-			let font
 			let floor
 			let boothLayer
 
@@ -217,13 +222,13 @@ const Canvas = () => {
 				boothLayer.textAlign(p5.CENTER)
 				boothLayer.fill(36, 36, 36)
 				boothLayer.text(name, x, y)
-				let largestMeasurement = Math.max(imageObj.width, imageObj.height)
-				let ratio = 1
-				if (largestMeasurement > size) {
-					ratio = size / largestMeasurement
-				}
-				let width = imageObj.width * ratio
-				let height = imageObj.height * ratio
+	
+				let	ratio = size / imageObj.width			
+				let width = size
+				let height = Math.floor(imageObj.height * ratio)
+        console.log(width)
+        console.log(height)
+        console.log(name)
 				boothLayer.strokeWeight(2)
 				boothLayer.stroke(36, 36, 36)
 				boothLayer.fill(0, 0, 0, 0)
@@ -234,7 +239,8 @@ const Canvas = () => {
 					height + textSize * 2 + boothPadding,
 					5
 				)
-				boothLayer.image(imageObj, x - width / 2, y + textSize, width, height)
+        imageObj.resize(width, 0)
+				boothLayer.image(imageObj, x - width / 2, y + textSize)
 				boothLayer.noStroke()
 			}
 
