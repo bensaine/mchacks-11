@@ -13,7 +13,8 @@ const style = css`
 	outline: none;
 	border-color: transparent;
 	box-sizing: border-box;
-
+	color:white;
+	
 	&:hover,
 	&:focus,
 	&:focus-visible {
