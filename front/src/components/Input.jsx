@@ -36,7 +36,9 @@ const Input = ({ title, name, type, placeholder, onChange }) => {
 	return (
 		<div css={divStyle}>
 			<label css={labelStyle} htmlFor={name}>{title}</label>
-			<input name={name} css={style} type={type} placeholder={placeholder} onChange={onChange} />
+			<input name={name} css={style} type={type} placeholder={placeholder} onChange={(e) => {
+				onChange(e.target.value)
+			}} />
 		</div>
 	)
 }

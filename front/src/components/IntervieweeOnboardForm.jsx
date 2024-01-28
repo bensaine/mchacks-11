@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { redirect } from "react-router-dom"
 import Button from "./Button"
 import Input from "./Input"
 import { usePlayerStore } from "../hooks/usePlayerStore.jsx"
@@ -15,23 +16,36 @@ export const IntervieweeOnboardForm = () => {
     const [gitHub, setGitHub] = useState("")
     const [resume, setResume] = useState("")
 
-
     const uploadResume = async () => {
         setLoading(true)
         const formData = new FormData()
         formData.append("file", resume)
         formData.append("uuid", player.id)
-        const response = await fetch("https://flask-fairy-backend2-3uhbl4hveq-uc.a.run.app/upload", {
+        const url = "https://flask-fairy-backend2-3uhbl4hveq-uc.a.run.app"
+        const response = await fetch(url+"/upload", {
             method: "POST",
             body: formData,
         })
         const data = await response.json()
-        console.log(data)
+        data.resume = url + "/uploads/" + player.id+ ".pdf"
+        return data
     }
 
     const handleSubmit = async () => {
-        await uploadResume()
-        setPlayerStore({...player, onboarded: true})
+        uploadResume().then((playerStore) => {
+           setPlayerStore({...player, 
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phone: phoneNumber,
+            linkedIn: linkedIn,
+            gitHub: gitHub,
+            onboarded: true, ...playerStore})
+        }).then(() => {
+            setLoading(false)
+            redirect("/room");
+        })
+
     }
     
     if (loading) {
