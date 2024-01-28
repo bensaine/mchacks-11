@@ -18,8 +18,8 @@ export const VideoStream = ({ stream,muted }) => {
         id="videoElement"
         ref={ref}
         width="300"
+        muted={muted}
         height="300"
-        muted={true}
       />
     </div>
   );

@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { redirect } from "react-router-dom"
 import Button from "./Button"
 import Input from "./Input"
 import { usePlayerStore } from "../hooks/usePlayerStore.jsx"
@@ -27,7 +26,7 @@ export const IntervieweeOnboardForm = () => {
             body: formData,
         })
         const data = await response.json()
-        data.resume = url + "/uploads/" + player.id+ ".pdf"
+        data.resume = url + "/uploads/" + player.id
         return data
     }
 
@@ -43,13 +42,17 @@ export const IntervieweeOnboardForm = () => {
             onboarded: true, ...playerStore})
         }).then(() => {
             setLoading(false)
-            redirect("/room");
+            window.location.href = "/room"
         })
 
     }
     
-    if (loading) {
+    if (player === undefined || loading) {
         return <div>Loading...</div>
+    }
+
+    if (player.onboarded) {
+        window.location.href = "/room"
     }
 
 	return <div>

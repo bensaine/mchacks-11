@@ -4,6 +4,7 @@ import { socket } from "../socket";
 import { nanoid } from "nanoid";
 import { usePeerHelper } from "../peerSetup";
 import { VideoStreams, VideoStream } from "./VideoStreams";
+import AvatarPicker from "./AvatarPicker";
 import p5 from "p5";
 
 const VELOCITY_MULTIPLIER = 5;
@@ -137,6 +138,13 @@ const Canvas = () => {
 	const sketchRef = useRef(null);
 	const worldRef = useRef(null);
 	const [loading, setLoading] = useState(true);
+
+  const [avatarState, setAvatarState] = useState("sunglasses")
+
+	function avatarChangeHandler(avatar){
+		setAvatarState(avatar)
+	}
+
 	useEffect(() => {
 		const world = new World(createPeerHelper);
 		window.world = world;
@@ -297,7 +305,8 @@ const Canvas = () => {
 		"loading"
 	) : (
 		<div>
-			<ReactP5Wrapper sketch={sketchRef.current}></ReactP5Wrapper>
+      <AvatarPicker onChosen={avatarChangeHandler}></AvatarPicker>
+      <ReactP5Wrapper sketch={sketchRef.current} avatar={avatarState} />
 			<VideoStreams streams={streams} />
 			{loadedWebcam && <VideoStream stream={helper.selfStream} />}
 		</div>
