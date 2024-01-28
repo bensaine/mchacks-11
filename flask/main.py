@@ -69,7 +69,13 @@ def ask_openAI(question):
 
 def analyze_resume(resume_path):
     reader = PdfReader(resume_path)
-    resume = reader.pages[0].extract_text(extraction_mode="layout")
+    try:
+        resume = reader.pages[0].extract_text(
+            extraction_mode="layout",
+            layout_mode_space_vertically=False,
+        )
+    except:
+        resume = reader.pages[0].extract_text()
 
     text_splitter = CharacterTextSplitter(
         separator="\n", chunk_size=600, chunk_overlap=100, length_function=len

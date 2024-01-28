@@ -20,7 +20,7 @@ export const IntervieweeOnboardForm = () => {
         const formData = new FormData()
         formData.append("file", resume)
         formData.append("uuid", player.id)
-        const url = "https://flask-fairy-backend2-3uhbl4hveq-uc.a.run.app"
+        const url = "https://flask-fairy-backend3-3uhbl4hveq-uc.a.run.app"
         const response = await fetch(url+"/upload", {
             method: "POST",
             body: formData,
