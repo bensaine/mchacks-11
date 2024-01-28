@@ -9,6 +9,7 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.llms import OpenAI
 from langchain_openai import ChatOpenAI
+from flask_cors import CORS
 
 # from langchain_community.document_loaders import PyPDFLoader
 from flask import Flask, request, abort, redirect, url_for, send_from_directory
@@ -20,6 +21,7 @@ load_dotenv()
 
 
 app = Flask(__name__)
+CORS(app)
 app.config["UPLOAD_FOLDER"] = "/pdfs"
 ALLOWED_EXTENSIONS = {"pdf"}
 
