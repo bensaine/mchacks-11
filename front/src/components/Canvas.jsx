@@ -25,14 +25,14 @@ function sketch(p5) {
 	let boothObjs;
 	let boothLocations;
 	let font;
-	let emojiFont;
 	let floor;
 	let boothLayer;
+	let emojis = []
 
 	window.p5 = p5;
 	class World {
 		constructor() {
-			this.player = new Player();
+			this.player = new Player(true);
 			this.player.init();
 			this.otherPlayers = {};
 		}
@@ -49,25 +49,26 @@ function sketch(p5) {
 		display() {
 			this.player.display();
 			for (const [key, { x, y }] of Object.entries(this.otherPlayers)) {
-				const tempPlayer = new Player();
-				tempPlayer.setPosition(x, y);
-				tempPlayer.display();
+				if (key !== this.player.id){
+					const tempPlayer = new Player(false);
+					tempPlayer.setPosition(x, y);
+					tempPlayer.display();
+				}
 			}
 		}
 	}
 	// debugger
 	class Player {
-		constructor() {
+		constructor(currentPlayer) {
+			this.currentPlayer = currentPlayer
 			this.position = p5.createVector(0, 0);
 		}
 		display() {
 			p5.fill(255, 255, 255);
 			p5.ellipse(this.position.x, this.position.y, 30, 30);
-			p5.fill("black");
-			p5.textFont(emojiFont);
-			p5.textSize(textSize);
-			p5.textAlign(p5.CENTER);
-			p5.text("👨", this.position.x, this.position.y+textSize/2)
+			if (this.currentPlayer) {
+				p5.image(emojis[0], this.position.x - 7.5, this.position.y - 7.5, 15, 15)
+			}
 		}
 
 		init() {
@@ -129,7 +130,13 @@ function sketch(p5) {
 
 	function drawBooths() {
 		for (let booth of boothObjs) {
-			drawBooth(booth.imgObj, booth.name, boothLocations[booth.name].x, boothLocations[booth.name].y, boothSize);
+			drawBooth(
+				booth.imgObj, 
+				booth.name, 
+				boothLocations[booth.name].x, 
+				boothLocations[booth.name].y, 
+				boothSize
+			);
 		}
 		boothObjs = null
 	}
@@ -184,9 +191,14 @@ function sketch(p5) {
 
 	p5.preload = () => {
 		boothObjs = loadBooths();
+		emojis = [
+			p5.loadImage("/emojis/heart_eyes.svg"),
+			p5.loadImage("/emojis/smile.svg"),
+			p5.loadImage("/emojis/star_struck.svg"),
+			p5.loadImage("/emojis/sunglasses.svg"),
+		]
 		floor = p5.loadImage("/floor.jpg");
 		font = p5.loadFont("/fonts/NotoSans-Regular.ttf");
-		emojiFont = p5.loadFont("/fonts/NotoColorEmoji-Regular.ttf");
 	};
 
 	p5.setup = () => {
