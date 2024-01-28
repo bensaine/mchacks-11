@@ -2,12 +2,14 @@ import { ReactP5Wrapper } from "@p5-wrapper/react";
 import { socket } from "../socket";
 import { nanoid } from "nanoid";
 import { css } from "@emotion/react";
+import AvatarPicker from "./AvatarPicker";
+import { useState } from "react";
 
 const boothGap = 60;
 const boothColumns = 3;
 
 const boothsData = [
-	{ name: "SSMU", image: "/ssmu.svg" },
+	{ name: "SSMU", image: "/ssmu.png" },
 	{ name: "Ensemble", image: "/Ensemble.png" },
 	{ name: "Bell", image: "/Bell.png" },
 	{ name: "NordVPN", image: "/Nord.png" },
@@ -28,6 +30,7 @@ function sketch(p5) {
 	let floor;
 	let boothLayer;
 	let emojis = []
+	let avatar = "smile"
 
 	window.p5 = p5;
 	class World {
@@ -67,7 +70,7 @@ function sketch(p5) {
 			p5.fill(255, 255, 255);
 			p5.ellipse(this.position.x, this.position.y, 30, 30);
 			if (this.currentPlayer) {
-				p5.image(emojis[0], this.position.x - 7.5, this.position.y - 7.5, 15, 15)
+				p5.image(emojis[avatar], this.position.x - 7.5, this.position.y - 7.5, 15, 15)
 			}
 		}
 
@@ -145,7 +148,7 @@ function sketch(p5) {
 		boothLayer.textFont(font);
 		boothLayer.textSize(textSize);
 		boothLayer.textAlign(p5.CENTER);
-		boothLayer.fill("black");
+		boothLayer.fill(36, 36, 36);
 		boothLayer.text(name, x, y);
 		let largestMeasurement = Math.max(imageObj.width, imageObj.height);
 		let ratio = 1;
@@ -155,14 +158,14 @@ function sketch(p5) {
 		let width = imageObj.width * ratio;
 		let height = imageObj.height * ratio;
 		boothLayer.strokeWeight(2);
-		boothLayer.stroke("gray");
+		boothLayer.stroke(36, 36, 36);
 		boothLayer.fill(0, 0, 0, 0);
 		boothLayer.rect(
 			x - width / 2 - boothPadding / 2,
 			y - textSize - boothPadding / 2,
 			width + boothPadding,
 			height + textSize * 2 + boothPadding,
-			2
+			5
 		);
 		boothLayer.image(imageObj, x - width / 2, y + textSize, width, height);
 		boothLayer.noStroke();
@@ -189,16 +192,22 @@ function sketch(p5) {
 		});
 	}
 
+	p5.updateWithProps = props => {
+		if (props.avatar) {
+			avatar = props.avatar
+		}
+	};
+
 	p5.preload = () => {
 		boothObjs = loadBooths();
-		emojis = [
-			p5.loadImage("/emojis/heart_eyes.svg"),
-			p5.loadImage("/emojis/smile.svg"),
-			p5.loadImage("/emojis/star_struck.svg"),
-			p5.loadImage("/emojis/sunglasses.svg"),
-		]
+		emojis = {
+			heart_eyes:p5.loadImage("/emojis/heart_eyes.svg"),
+			smile:p5.loadImage("/emojis/smile.svg"),
+			star_struck:p5.loadImage("/emojis/star_struck.svg"),
+			sunglasses:p5.loadImage("/emojis/sunglasses.svg"),
+		}
 		floor = p5.loadImage("/floor.jpg");
-		font = p5.loadFont("/fonts/NotoSans-Regular.ttf");
+		font = p5.loadFont("/fonts/NotoSans-Bold.ttf");
 	};
 
 	p5.setup = () => {
@@ -236,8 +245,16 @@ let divStyle = css`
 `
 
 const Canvas = () => {
+
+	const [avatarState, setAvatarState] = useState("sunglasses")
+
+	function avatarChangeHandler(avatar){
+		setAvatarState(avatar)
+	}
+
 	return <div css={divStyle}>
-		<ReactP5Wrapper sketch={sketch} />
+		<AvatarPicker onChosen={avatarChangeHandler}></AvatarPicker>
+		<ReactP5Wrapper sketch={sketch} avatar={avatarState} />
 	</div>;
 };
 
