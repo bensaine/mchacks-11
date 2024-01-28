@@ -149,11 +149,8 @@ class Player {
 }
 
 const Canvas = () => {
-  const { getStoragePlayer } = usePlayerStore();
-
-  const player = getStoragePlayer()
-  debugger
-  const { createPeerHelper, streams, loadedWebcam } = usePeerHelper(player.id);
+  const { player: playerInfo } = usePlayerStore();
+  const { createPeerHelper, streams, loadedWebcam } = usePeerHelper(playerInfo.id);
   const sketchRef = useRef(null);
   const worldRef = useRef(null);
   const [loading, setLoading] = useState(true);
@@ -165,8 +162,8 @@ const Canvas = () => {
   }
 
   useEffect(() => {
-
-    const world = new World(createPeerHelper,player.id);
+	debugger
+    const world = new World(createPeerHelper,playerInfo);
     window.world = world;
     worldRef.current = world;
     const sketch = (p5) => {
@@ -332,7 +329,7 @@ const Canvas = () => {
       <AvatarPicker onChosen={avatarChangeHandler}></AvatarPicker>
       <ReactP5Wrapper sketch={sketchRef.current} avatar={avatarState} />
       <VideoStreams streams={streams} />
-      {loadedWebcam && <VideoStream stream={helper.selfStream} />}
+      {loadedWebcam && <VideoStream stream={helper.selfStream} muted/>}
     </div>
   );
 };
