@@ -10,7 +10,9 @@ import { usePlayerStore } from "../hooks/usePlayerStore"
 import { css } from "@emotion/react"
 
 const selfWebcamStyle = css`
-	position: fixed;
+  position: fixed;
+  bottom:0rem;
+  left:0rem;
 `
 
 const VELOCITY_MULTIPLIER = 5

@@ -17,7 +17,7 @@ export const VideoStream = ({ stream,muted }) => {
         autoPlay={true}
         id="videoElement"
         ref={ref}
-        width="300"
+        // width="300"
         muted={muted}
         // height="300"
       />
