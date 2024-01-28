@@ -2,4 +2,9 @@ Flask
 langchain
 pandas
 Werkzeug
+pypdf
+openai
+python-dotenv
+langchain_openai
 langchain_community
+faiss-cpu

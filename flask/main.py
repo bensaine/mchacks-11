@@ -1,7 +1,6 @@
 from openai import OpenAI
 
 client = OpenAI()
-import pandas as pd
 import json
 from pypdf import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
@@ -10,11 +9,6 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.llms import OpenAI
 from langchain_openai import ChatOpenAI
-from langchain.prompts import (
-    SystemMessagePromptTemplate,
-    HumanMessagePromptTemplate,
-    ChatPromptTemplate,
-)
 
 # from langchain_community.document_loaders import PyPDFLoader
 from flask import Flask, request, abort, redirect, url_for, send_from_directory
