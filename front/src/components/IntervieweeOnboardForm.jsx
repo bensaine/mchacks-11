@@ -32,14 +32,16 @@ export const IntervieweeOnboardForm = () => {
 
     const handleSubmit = async () => {
         uploadResume().then((playerStore) => {
-           setPlayerStore({...player, 
+            alert('setting player store')
+            debugger
+           setPlayerStore(prevPlayer => ({...prevPlayer, 
             firstName: firstName,
             lastName: lastName,
             email: email,
             phone: phoneNumber,
             linkedIn: linkedIn,
             gitHub: gitHub,
-            onboarded: true, ...playerStore})
+            onboarded: true, ...playerStore}))
         }).then(() => {
             setLoading(false)
             window.location.href = "/room"
