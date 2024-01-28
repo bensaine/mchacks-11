@@ -30,26 +30,21 @@ export const IntervieweeOnboardForm = () => {
 		return data
 	}
 
-	const handleSubmit = async () => {
-		uploadResume()
-			.then((playerStore) => {
-				setPlayerStore({
-					...player,
-					firstName: firstName,
-					lastName: lastName,
-					email: email,
-					phone: phoneNumber,
-					linkedIn: linkedIn,
-					gitHub: gitHub,
-					onboarded: true,
-					...playerStore,
-				})
-			})
-			.then(() => {
-				setLoading(false)
-				window.location.href = "/room"
-			})
-	}
+    const handleSubmit = async () => {
+        uploadResume().then((playerStore) => {
+           setPlayerStore(prevPlayer => ({...prevPlayer, 
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phone: phoneNumber,
+            linkedIn: linkedIn,
+            gitHub: gitHub,
+            onboarded: true, ...playerStore}))
+        }).then(() => {
+            setLoading(false)
+            window.location.href = "/room"
+        })
+    }
 
 	if (player.onboarded) {
 		window.location.href = "/room"

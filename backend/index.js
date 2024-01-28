@@ -14,8 +14,8 @@ const io = require("socket.io")(httpServer, {
 })
 
 
-const userUpdate = (userId) => ({ id, x, y }) => {
-	players[id] = { x, y }
+const userUpdate = (userId) => ({ id, x, y ,info}) => {
+	players[id] = { x, y, info }
 	uidMap[userId] = id
 	console.log("players is")
 	console.log(players)
@@ -28,6 +28,9 @@ const userDelete = (userId) => () => {
 	delete uidMap[userId]
 	delete players[realUid]
 }
+
+
+
 const onConnection = (socket) => {
 	const backendId = nanoid()
 	console.log("onConnection invoked!")

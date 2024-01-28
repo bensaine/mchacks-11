@@ -130,10 +130,10 @@ class PeerHelper {
   }
 }
 
-export const usePeerHelper = () => {
+export const usePeerHelper = (id) => {
   const [streams, setStreams] = useState({});
   const [loadedWebcam, setLoadedWebcam] = useState(false);
-  const createPeerHelper = (id) => {
+  const createPeerHelper = () => {
     const peerHelper = new PeerHelper(id);
     peerHelper.bindSetLoader(() => {
       setLoadedWebcam(true);
