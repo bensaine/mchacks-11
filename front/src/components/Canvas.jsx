@@ -107,18 +107,20 @@ class Player {
 		this.info = info
 	}
 	display(sketch) {
-    const IMAGE_SIZE = 40
-    const ELLIPSE_SIZE = 50
-    sketch.textFont(font)
-    sketch.textSize(textSize)
-    sketch.textAlign(sketch.CENTER)
-    sketch.fill(36, 36, 36)
-    sketch.text(`${this.info.firstName} ${this.info.lastName}`, this.position.x, this.position.y - ELLIPSE_SIZE/2)
+		const IMAGE_SIZE = 40
+		const ELLIPSE_SIZE = 50
+		sketch.textFont(font)
+		sketch.textSize(textSize)
+		sketch.textAlign(sketch.CENTER)
+		sketch.fill(36, 36, 36)
+		sketch.text(`${this.info.firstName} ${this.info.lastName}`, this.position.x, this.position.y - ELLIPSE_SIZE/2)
 		sketch.fill(255, 255, 255)
 		sketch.ellipse(this.position.x, this.position.y + textSize, ELLIPSE_SIZE, ELLIPSE_SIZE)
+		let playerAvatar = emojis["sunglasses"]
 		if (this.currentPlayer) {
-			sketch.image(emojis[avatar], this.position.x - IMAGE_SIZE / 2 , this.position.y - IMAGE_SIZE / 2 + textSize, IMAGE_SIZE, IMAGE_SIZE)
-		}
+			playerAvatar = emojis[avatar]
+		} 
+		sketch.image(playerAvatar, this.position.x - IMAGE_SIZE / 2 , this.position.y - IMAGE_SIZE / 2 + textSize, IMAGE_SIZE, IMAGE_SIZE)
 	}
 
 	init() {
@@ -292,13 +294,20 @@ const Canvas = () => {
 		sketchRef.current = sketch
 		setLoading(false)
 	}, [])
+	window.streams = streams
+	const realStreams = {}
+	for (const [key,val] of Object.entries(streams)){
+		if (key != player.id){
+			realStreams[key] = val
+		}
+	}
 	return loading ? (
 		"loading"
 	) : (
 		<div style={{ postion: "relative" }}>
 			<AvatarPicker onChosen={avatarChangeHandler}></AvatarPicker>
 			<ReactP5Wrapper sketch={sketchRef.current} avatar={avatarState} />
-			<VideoStreams streams={streams} />
+			<VideoStreams streams={realStreams}/>
 			{loadedWebcam && <MyStream stream={helper.selfStream} muted />}
 			<Insights player={player} />
 		</div>

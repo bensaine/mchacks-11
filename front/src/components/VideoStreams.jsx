@@ -3,15 +3,15 @@ import { css } from "@emotion/react";
 
 
 const videoStreamsStyle = css`
-  position:fixed:
+  position:fixed;
   top:0rem;
   left:0rem;
-  width: 75%;
+  width: 60%;
   display:flex;
   flex-direction:row;
   flex-wrap: wrap;
-  align-items:center
-  justify-content:start;
+  align-items:center;
+  z-index: 2;
 `
 
 export const VideoStream = ({ stream,muted }) => {
@@ -32,7 +32,7 @@ export const VideoStream = ({ stream,muted }) => {
         ref={ref}
         width="300"
         muted={muted}
-        height="300"
+        // height="300"
       />
     </div>
   );
@@ -42,7 +42,11 @@ export const VideoStream = ({ stream,muted }) => {
 export const VideoStreams = ({ streams }) => {
   return (
     <div css={videoStreamsStyle}>
-        <div>
+        <div style={{
+          width: "16rem",
+          overflow: "hidden",
+          lineHeight: 0,
+        }}>
         {Object.entries(streams).map(([id, stream]) => {
           return <VideoStream key={id} stream={stream} />;
         })}
