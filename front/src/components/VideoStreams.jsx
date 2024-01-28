@@ -12,14 +12,14 @@ export const VideoStream = ({ stream,muted }) => {
   }, []);
 
   return (
-    <div>
+    <div style={{margin: 0, lineHeight: 0, overflow: "hidden"}}>
       <video
         autoPlay={true}
         id="videoElement"
         ref={ref}
         width="300"
         muted={muted}
-        height="300"
+        // height="300"
       />
     </div>
   );
