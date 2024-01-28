@@ -7,13 +7,6 @@ import AvatarPicker from "./AvatarPicker"
 import p5 from "p5"
 import { MyStream } from "./MyStream"
 import { usePlayerStore } from "../hooks/usePlayerStore"
-import { css } from "@emotion/react"
-
-const selfWebcamStyle = css`
-  position: fixed;
-  bottom:0rem;
-  left:0rem;
-`
 
 const VELOCITY_MULTIPLIER = 5
 const UP = new p5.Vector(0, -1)
