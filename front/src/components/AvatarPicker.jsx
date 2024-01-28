@@ -59,7 +59,7 @@ const rowStyle = css`
 `
 
 const textStyle = css`
-	margin-left:0.2rem;
+	margin-left:1rem;
 	font-weight:bold;
 `	
 

@@ -1,12 +1,16 @@
 import { useRef, useEffect, useState } from "react";
 import { ReactP5Wrapper } from "@p5-wrapper/react";
 import { socket } from "../socket";
-import { nanoid } from "nanoid";
 import { usePeerHelper } from "../peerSetup";
 import { VideoStreams, VideoStream } from "./VideoStreams";
 import AvatarPicker from "./AvatarPicker";
 import p5 from "p5";
 import { usePlayerStore } from "../hooks/usePlayerStore";
+import { css } from "@emotion/react";
+
+const selfWebcamStyle = css`
+  position: fixed;
+`
 
 const VELOCITY_MULTIPLIER = 5;
 const UP = new p5.Vector(0, -1);
@@ -45,12 +49,12 @@ let emojis = [];
 let avatar = "smile";
 
 class World {
-  constructor(createPeerHelper,playerInfo) {
-    this.player = new Player(true,playerInfo);
+  constructor(createPeerHelper, playerInfo) {
+    this.player = new Player(true, playerInfo);
     this.player.init();
-	this.id = playerInfo.id
-	this.playerInfo = playerInfo
-	this.player.id = playerInfo.id
+    this.id = playerInfo.id
+    this.playerInfo = playerInfo
+    this.player.id = playerInfo.id
     this.otherPlayers = {};
     this.helper = createPeerHelper();
     this.p5 = null;
@@ -70,9 +74,9 @@ class World {
   }
   display(sketch) {
     this.player.display(sketch);
-    for (const [key, { x, y,info }] of Object.entries(this.otherPlayers)) {
+    for (const [key, { x, y, info }] of Object.entries(this.otherPlayers)) {
       if (key === this.player.id) continue;
-      const tempPlayer = new Player(false,info);
+      const tempPlayer = new Player(false, info);
       tempPlayer.setPosition(x, y);
       tempPlayer.display(sketch);
     }
@@ -99,11 +103,11 @@ class World {
 }
 // debugger
 class Player {
-  constructor(currentPlayer,info) {
+  constructor(currentPlayer, info) {
     this.currentPlayer = currentPlayer;
     this.position = new p5.Vector(0, 0);
-	this.id = null
-	this.info = info
+    this.id = null
+    this.info = info
   }
   display(sketch) {
     sketch.fill(255, 255, 255);
@@ -136,7 +140,7 @@ class Player {
     // console.log(`updated position to ${this.position.x} ${this.position.y}`)
     const { x, y } = this.position;
     const id = this.id;
-	const info = this.info
+    const info = this.info
     socket.emit("user:update", { x, y, id, info });
   }
 
@@ -149,8 +153,11 @@ class Player {
 }
 
 const Canvas = () => {
-  const { player: playerInfo } = usePlayerStore();
-  const { createPeerHelper, streams, loadedWebcam } = usePeerHelper(playerInfo.id);
+  const { getStoragePlayer } = usePlayerStore();
+
+  const player = getStoragePlayer()
+  // debugger
+  const { createPeerHelper, streams, loadedWebcam } = usePeerHelper(player.id);
   const sketchRef = useRef(null);
   const worldRef = useRef(null);
   const [loading, setLoading] = useState(true);
@@ -162,8 +169,8 @@ const Canvas = () => {
   }
 
   useEffect(() => {
-	debugger
-    const world = new World(createPeerHelper,playerInfo);
+    // debugger
+    const world = new World(createPeerHelper, player);
     window.world = world;
     worldRef.current = world;
     const sketch = (p5) => {
@@ -197,7 +204,7 @@ const Canvas = () => {
             x: (boothSize + boothPadding + boothGap) * rowPos - xOffset,
             y:
               currentRow *
-                (boothSize + boothPadding + textSize * 2 + boothGap) -
+              (boothSize + boothPadding + textSize * 2 + boothGap) -
               yOffset,
           };
           if (currentRow === yCenter && xCenter == rowPos + 1) {
@@ -284,6 +291,7 @@ const Canvas = () => {
           window.innerHeight,
           p5.WEBGL
         );
+        boothLayer.pixelDensity(p5.pixelDensity())
         drawBooths();
         addKeyListeners();
       };
@@ -329,7 +337,7 @@ const Canvas = () => {
       <AvatarPicker onChosen={avatarChangeHandler}></AvatarPicker>
       <ReactP5Wrapper sketch={sketchRef.current} avatar={avatarState} />
       <VideoStreams streams={streams} />
-      {loadedWebcam && <VideoStream stream={helper.selfStream} muted/>}
+      {loadedWebcam && <VideoStream stream={helper.selfStream} muted />}
     </div>
   );
 };
