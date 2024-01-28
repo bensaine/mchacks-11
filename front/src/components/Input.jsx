@@ -32,11 +32,11 @@ const divStyle = css`
 	justify-content: center;
 `
 
-const Input = ({ title, placeholder, onChange }) => {
+const Input = ({ title, name, type, placeholder, onChange }) => {
 	return (
 		<div css={divStyle}>
-			<label css={labelStyle} htmlFor={title}>{title}</label>
-			<input name={title} css={style} type="text" placeholder={placeholder} onChange={onChange} />
+			<label css={labelStyle} htmlFor={name}>{title}</label>
+			<input name={name} css={style} type={type} placeholder={placeholder} onChange={onChange} />
 		</div>
 	)
 }
