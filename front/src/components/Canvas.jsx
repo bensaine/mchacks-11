@@ -301,15 +301,25 @@ const Canvas = () => {
 			realStreams[key] = val
 		}
 	}
+
+	let otherPlayerInfo = null
+	const otherPlayerId = Object.keys(realStreams)[0]
+	if (worldRef.current !== null){
+		const otherPlayer = worldRef.current.otherPlayers[otherPlayerId]
+		if (!!otherPlayer){
+			otherPlayerInfo = otherPlayer.info
+		}
+	}
+	// const otherPlayerInfo = (worldRef.current.otherPlayers[otherPlayerId] || {info : null}).info
 	return loading ? (
 		"loading"
 	) : (
 		<div style={{ postion: "relative" }}>
 			<AvatarPicker onChosen={avatarChangeHandler}></AvatarPicker>
 			<ReactP5Wrapper sketch={sketchRef.current} avatar={avatarState} />
-			<VideoStreams streams={realStreams}/>
+			<VideoStreams streams={realStreams} infos={worldRef.current.otherPlayers}/>
 			{loadedWebcam && <MyStream stream={helper.selfStream} muted />}
-			<Insights player={player} />
+			{otherPlayerInfo && <Insights player={otherPlayerInfo}/>}
 		</div>
 	)
 }
